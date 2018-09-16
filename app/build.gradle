@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 repositories {
+    maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     maven { url "https://jitpack.io" }
 }
 
@@ -25,12 +26,15 @@ android {
         }
     }
 
+    flavorDimensions 'normal', 'noop'
     productFlavors {
         normal {
             applicationIdSuffix ".normal"
+            dimension "normal"
         }
         noop {
             applicationIdSuffix ".noop"
+            dimension "noop"
         }
     }
 
@@ -40,21 +44,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:$project.supportLibVersion"
-    compile "com.jakewharton.timber:timber:$project.timberVersion"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:$project.supportLibVersion"
+    implementation "com.jakewharton.timber:timber:$project.timberVersion"
 
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$project.leakCanaryVersion"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$project.leakCanaryVersion"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$project.leakCanaryVersion"
-
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$project.leakCanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$project.leakCanaryVersion"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$project.leakCanaryVersion"
 
     // test local version of realm-browser
-    normalCompile project(':realm-browser')
-    noopCompile project(':realm-browser-no-op')
+    normalImplementation project(':realm-browser')
+    noopImplementation project(':realm-browser-no-op')
 
     // Use develop-snapshot version
 //    normalCompile "com.github.jonasrottmann.realm-browser:realm-browser:develop-SNAPSHOT"
